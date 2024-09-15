@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1083298180379",
+    "project_id": "architecto-app",
+    "storage_bucket": "architecto-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1083298180379:android:3852082b1320ebc44d77be",
+        "android_client_info": {
+          "package_name": "com.praveenmsp.architecto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNa_jF_2gy1AvD0rQXqMo_dFzJHXEQTW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

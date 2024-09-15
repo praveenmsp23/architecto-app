@@ -1,0 +1,17 @@
+version:
+  revision: "5874a72aa4c779a02553007c47dacbefba2374dc"
+  channel: "stable"
+
+project_type: app
+
+migration:
+  platforms:
+    - platform: root
+      create_revision: 5874a72aa4c779a02553007c47dacbefba2374dc
+      base_revision: 5874a72aa4c779a02553007c47dacbefba2374dc
+    - platform: android
+      create_revision: 5874a72aa4c779a02553007c47dacbefba2374dc
+      base_revision: 5874a72aa4c779a02553007c47dacbefba2374dc
+
+  unmanaged_files:
+    - 'lib/main.dart'
