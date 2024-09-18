@@ -8,7 +8,9 @@ class Input extends StatefulWidget {
   final String? placeholder;
   final Widget? prefix;
   final Widget? suffix;
+  final TextInputType type;
   final bool obscureText;
+  final VoidCallback? onChange;
   final TextEditingController controller;
 
   const Input({
@@ -19,6 +21,8 @@ class Input extends StatefulWidget {
     this.placeholder,
     this.prefix,
     this.suffix,
+    this.onChange,
+    this.type = TextInputType.text,
     this.obscureText = false,
     required this.controller,
   }) : super(key: key);
@@ -29,71 +33,79 @@ class Input extends StatefulWidget {
 
 class _InputState extends State<Input> {
   @override
-  void dispose() {
-    widget.controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label != null)
-          Text(widget.label!, style: context.textTheme.textStyle),
+          Padding(
+            padding: EdgeInsets.only(left: 4),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(widget.label!),
+            ),
+          ),
+        SizedBox(height: 6),
         Container(
-          padding: EdgeInsets.symmetric(vertical: 4.0),
+          padding: EdgeInsets.symmetric(vertical: 1.0),
           decoration: BoxDecoration(
             border: Border.all(
-              color: widget.error != null
+              width: 2.0,
+              color: widget.error != ""
                   ? CupertinoColors.systemRed
                   : CupertinoColors.lightBackgroundGray,
             ),
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(10.0),
           ),
           child: Row(
             children: [
               if (widget.prefix != null)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: EdgeInsets.only(left: 12, right: 4),
                   child: widget.prefix,
                 ),
               Expanded(
                 child: CupertinoTextField(
-                  controller: widget.controller,
-                  obscureText: widget.obscureText,
-                  placeholder: widget.placeholder,
                   decoration: null,
-                  onTap: () => setState(() {}),
-                  onEditingComplete: () => setState(() {}),
+                  obscureText: widget.obscureText,
+                  keyboardType: widget.type,
+                  placeholder: widget.placeholder,
+                  style: TextStyle(fontSize: 20),
+                  controller: widget.controller,
                 ),
               ),
               if (widget.suffix != null)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: EdgeInsets.only(left: 4, right: 12),
                   child: widget.suffix,
                 ),
             ],
           ),
         ),
-        if (widget.error != null)
+        SizedBox(height: 6),
+        if (widget.error != "")
           Padding(
-            padding: EdgeInsets.only(top: 8.0),
-            child: Text(
-              widget.error!,
-              style: TextStyle(
-                color: CupertinoColors.systemRed,
-                fontSize: 12,
+            padding: EdgeInsets.only(left: 4),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                widget.error!,
+                style: TextStyle(
+                  color: CupertinoColors.systemRed,
+                ),
               ),
             ),
           ),
+        SizedBox(height: 6),
         if (widget.hint != null)
           Padding(
-            padding: EdgeInsets.only(top: 8.0),
-            child: Text(
-              widget.hint!,
-              style: TextStyle(
-                fontSize: 12,
+            padding: EdgeInsets.only(left: 4),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                widget.hint!,
+                style: TextStyle(
+                  color: context.secondaryTextColor,
+                ),
               ),
             ),
           ),

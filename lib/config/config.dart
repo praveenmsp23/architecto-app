@@ -20,11 +20,11 @@ class Config {
   static void initialize() {
     switch (environment) {
       case Environment.local:
-        appName = "Architecto Local";
+        appName = "Architecto";
         baseUrl = 'http://localhost:8080';
         break;
       case Environment.development:
-        appName = "Architecto Dev";
+        appName = "Architecto";
         baseUrl = 'https://api-dev.architecto.praveenmsp.com';
         break;
       case Environment.production:

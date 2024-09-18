@@ -1,5 +1,5 @@
+import 'package:architecto/extensions/theme.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 enum ButtonVariant { primary, secondary, destructive, outline, ghost, link }
 
@@ -8,92 +8,76 @@ enum ButtonSize { small, medium, large }
 class Button extends StatelessWidget {
   final String text;
   final String? loadingText;
-  final ButtonVariant variant;
-  final ButtonSize size;
   final bool isLoading;
   final bool isEnabled;
+  final ButtonVariant variant;
+  final ButtonSize size;
   final VoidCallback? onPressed;
 
   Button({
     required this.text,
     this.loadingText,
-    this.variant = ButtonVariant.primary,
-    this.size = ButtonSize.medium,
     this.isLoading = false,
     this.isEnabled = true,
+    this.variant = ButtonVariant.primary,
+    this.size = ButtonSize.medium,
     required this.onPressed,
   });
 
   Color _getBackgroundColor(BuildContext context) {
-    if (!isEnabled) return Colors.grey;
-
     switch (variant) {
       case ButtonVariant.primary:
-        return Colors.white;
+        return context.primaryColor;
       case ButtonVariant.secondary:
-        return Colors.grey;
+        return context.secondaryColor;
       case ButtonVariant.destructive:
-        return Colors.red;
+        return CupertinoColors.destructiveRed;
       case ButtonVariant.outline:
+        return CupertinoColors.transparent;
       case ButtonVariant.ghost:
+        return CupertinoColors.transparent;
       case ButtonVariant.link:
-        return Colors.transparent;
+        return CupertinoColors.transparent;
     }
   }
 
   Color _getTextColor(BuildContext context) {
-    if (!isEnabled) return Colors.white;
-
     switch (variant) {
       case ButtonVariant.primary:
-        return Colors.black;
+        return context.primaryButtonTextColor;
       case ButtonVariant.secondary:
-        return Colors.white;
+        return context.primaryButtonTextColor;
       case ButtonVariant.destructive:
-        return Colors.white;
+        return CupertinoColors.white;
       case ButtonVariant.outline:
-        return Colors.white;
+        return context.primaryTextColor;
       case ButtonVariant.ghost:
-        return Colors.white;
+        return context.primaryTextColor;
       case ButtonVariant.link:
-        return Colors.white;
-    }
-  }
-
-  Color _getBorderColor() {
-    if (!isEnabled) return Colors.grey;
-
-    switch (variant) {
-      case ButtonVariant.outline:
-        return Colors.white;
-      case ButtonVariant.primary:
-      case ButtonVariant.secondary:
-      case ButtonVariant.destructive:
-      case ButtonVariant.ghost:
-      case ButtonVariant.link:
-        return Colors.transparent;
-    }
-  }
-
-  EdgeInsets _getPadding() {
-    switch (size) {
-      case ButtonSize.small:
-        return EdgeInsets.symmetric(horizontal: 12, vertical: 8);
-      case ButtonSize.medium:
-        return EdgeInsets.symmetric(horizontal: 16, vertical: 12);
-      case ButtonSize.large:
-        return EdgeInsets.symmetric(horizontal: 20, vertical: 16);
+        return context.primaryTextColor;
     }
   }
 
   double _getFontSize() {
     switch (size) {
       case ButtonSize.small:
-        return 12;
-      case ButtonSize.medium:
         return 16;
-      case ButtonSize.large:
+      case ButtonSize.medium:
         return 18;
+      case ButtonSize.large:
+        return 20;
+    }
+  }
+
+  EdgeInsets _getPadding() {
+    if (variant == ButtonVariant.link) return EdgeInsets.all(0);
+    switch (size) {
+      case ButtonSize.small:
+        return EdgeInsets.all(8);
+      case ButtonSize.medium:
+        return EdgeInsets.all(10);
+      case ButtonSize.large:
+        return EdgeInsets.all(12);
     }
   }
 
@@ -104,40 +88,39 @@ class Button extends StatelessWidget {
       child: Container(
         padding: _getPadding(),
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
           color: _getBackgroundColor(context),
-          borderRadius: BorderRadius.circular(8),
-          border: variant == ButtonVariant.outline
-              ? Border.all(color: _getBorderColor(), width: 2)
-              : null,
+          border: Border.all(
+            width: 2,
+            color: variant == ButtonVariant.outline
+                ? context.secondaryColor
+                : CupertinoColors.transparent,
+          ),
         ),
-        child: Center(
-          child: isLoading
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CupertinoActivityIndicator(),
-                    SizedBox(width: 8),
-                    Text(
-                      loadingText ?? text,
-                      style: TextStyle(
-                        color: _getTextColor(context),
-                        fontSize: _getFontSize(),
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            isLoading
+                ? Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: CupertinoActivityIndicator(
+                      color: _getTextColor(context),
                     ),
-                  ],
-                )
-              : Text(
-                  text,
-                  style: TextStyle(
-                    color: _getTextColor(context),
-                    fontSize: _getFontSize(),
-                    fontWeight: FontWeight.bold,
-                    decoration: variant == ButtonVariant.link
-                        ? TextDecoration.underline
-                        : TextDecoration.none,
-                  ),
-                ),
+                  )
+                : SizedBox(),
+            Text(
+              isLoading ? loadingText ?? text : text,
+              style: TextStyle(
+                decoration: variant == ButtonVariant.link
+                    ? TextDecoration.underline
+                    : TextDecoration.none,
+                fontSize: _getFontSize(),
+                color: _getTextColor(context)
+                    .withOpacity(isEnabled || isLoading ? 0.75 : 1),
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
         ),
       ),
     );

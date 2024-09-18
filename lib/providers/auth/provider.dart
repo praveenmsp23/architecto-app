@@ -14,22 +14,6 @@ class AuthProvider extends ChangeNotifier {
     });
   }
 
-  Future<void> signInWithPhoneNumber(
-    String phoneNumber,
-    void Function(PhoneAuthCredential) verificationCompleted,
-    void Function(FirebaseAuthException) verificationFailed,
-    void Function(String, int?) codeSent,
-    void Function(String) codeAutoRetrievalTimeout,
-  ) async {
-    await _firebaseAuth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      verificationCompleted: verificationCompleted,
-      verificationFailed: verificationFailed,
-      codeSent: codeSent,
-      codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
-    );
-  }
-
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
