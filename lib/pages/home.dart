@@ -1,11 +1,18 @@
+import 'package:architecto/providers/auth/provider.dart';
+import 'package:architecto/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AuthProvider _auth = Get.find();
     return CupertinoPageScaffold(
       child: Center(
-        child: Text('Welcome to Home Page'),
+        child: Button(
+          text: "Logout",
+          onPressed: () => _auth.signOut(),
+        ),
       ),
     );
   }

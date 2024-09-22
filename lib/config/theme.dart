@@ -27,8 +27,8 @@ class Themes {
     textTheme: CupertinoTextThemeData(
       textStyle: TextStyle(
         fontSize: 16,
+        color: CupertinoColors.black,
         fontFamily: "Sriracha",
-        fontWeight: FontWeight.w400,
       ),
       primaryColor: CupertinoColors.black,
     ),
@@ -42,8 +42,8 @@ class Themes {
     textTheme: CupertinoTextThemeData(
       textStyle: TextStyle(
         fontSize: 16,
+        color: CupertinoColors.white,
         fontFamily: "Sriracha",
-        fontWeight: FontWeight.w400,
       ),
       primaryColor: CupertinoColors.white,
     ),

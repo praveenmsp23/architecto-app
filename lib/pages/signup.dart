@@ -1,8 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:architecto/extensions/theme.dart';
+import 'package:architecto/models/common.dart';
 import 'package:architecto/pages/signin.dart';
+import 'package:architecto/providers/auth/provider.dart';
+import 'package:architecto/utils/common.dart';
 import 'package:architecto/widgets/button.dart';
 import 'package:architecto/widgets/input.dart';
+import 'package:architecto/widgets/snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -14,76 +18,94 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  bool showPassword = false;
+  AuthProvider _auth = Get.find();
+  bool _isLoading = false;
+  bool _showPassword = false;
 
-  String nameError = "";
-  String emailError = "";
-  String passwordError = "";
+  String _nameError = "";
+  String _emailError = "";
+  String _passwordError = "";
 
-  final TextEditingController _nameCont = TextEditingController();
-  final TextEditingController _emailCont = TextEditingController();
-  final TextEditingController _passwordCont = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  void handleSignUp() {
-    if (_nameCont.value.text == "")
-      setState(() {
-        nameError = "Name is required";
-      });
-    if (_emailCont.value.text == "")
-      setState(() {
-        emailError = "Email is required";
-      });
-    if (_passwordCont.value.text == "")
-      setState(() {
-        passwordError = "Password is required";
-      });
-    if (!GetUtils.isEmail(_emailCont.value.text)) {
-      setState(() {
-        emailError = "Invalid email address";
-      });
+  Future<void> _signUp() async {
+    if (_nameError.isNotEmpty ||
+        _emailError.isNotEmpty ||
+        _passwordError.isNotEmpty) return;
+    String name = _nameController.text;
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    setState(() {
+      _isLoading = true;
+    });
+    Result result = await _auth.signUp(name, email, password);
+    if (!result.success) {
+      SnackBar().errorMessage(result.message);
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
-  void handleShowPassword() {
+  void _onShowPassword() {
     setState(() {
-      showPassword = !showPassword;
+      _showPassword = !_showPassword;
     });
   }
 
   void _onNameChange() {
+    String name = _nameController.text;
     setState(() {
-      nameError = "";
+      if (name.isEmpty) {
+        _nameError = 'Please enter your name';
+      } else if (name.length < 8) {
+        _nameError = "Name must contain at least 3 characters";
+      } else {
+        _nameError = "";
+      }
     });
   }
 
   void _onEmailChange() {
-    setState(() {
-      emailError = "";
-    });
+    String email = _emailController.text;
+    if (!GetUtils.isEmail(email)) {
+      setState(() {
+        _emailError = "Invalid email";
+      });
+    } else {
+      setState(() {
+        _emailError = "";
+      });
+    }
   }
 
   void _onPasswordChange() {
+    String password = _passwordController.text;
+    Result<String> _passwordResult = checkPasswordStrength(password);
     setState(() {
-      passwordError = "";
+      _passwordError = _passwordResult.message;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _nameCont.addListener(_onNameChange);
-    _emailCont.addListener(_onEmailChange);
-    _passwordCont.addListener(_onPasswordChange);
+    _nameController.addListener(_onNameChange);
+    _emailController.addListener(_onEmailChange);
+    _passwordController.addListener(_onPasswordChange);
   }
 
   @override
   void dispose() {
-    _nameCont.removeListener(_onNameChange);
-    _emailCont.removeListener(_onEmailChange);
-    _passwordCont.removeListener(_onPasswordChange);
-    _nameCont.dispose();
-    _emailCont.dispose();
-    _passwordCont.dispose();
+    _nameController.removeListener(_onNameChange);
+    _emailController.removeListener(_onEmailChange);
+    _passwordController.removeListener(_onPasswordChange);
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -122,6 +144,7 @@ class _SignupPageState extends State<SignupPage> {
                       style: TextStyle(
                         fontSize: 36,
                         height: 1.25,
+                        color: context.secondaryTextColor,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
@@ -134,8 +157,8 @@ class _SignupPageState extends State<SignupPage> {
                 FadeInUp(
                   delay: const Duration(milliseconds: 600),
                   child: Input(
-                    controller: _nameCont,
-                    error: nameError,
+                    controller: _nameController,
+                    error: _nameError,
                     label: "Name",
                     type: TextInputType.name,
                     placeholder: "John Snow",
@@ -144,8 +167,8 @@ class _SignupPageState extends State<SignupPage> {
                 FadeInUp(
                   delay: const Duration(milliseconds: 600),
                   child: Input(
-                    controller: _emailCont,
-                    error: emailError,
+                    controller: _emailController,
+                    error: _emailError,
                     label: "Email",
                     type: TextInputType.emailAddress,
                     placeholder: "name@example.com",
@@ -154,17 +177,15 @@ class _SignupPageState extends State<SignupPage> {
                 FadeInUp(
                   delay: const Duration(milliseconds: 600),
                   child: Input(
-                    controller: _passwordCont,
-                    error: passwordError,
+                    controller: _passwordController,
+                    error: _passwordError,
                     label: "Password",
                     type: TextInputType.text,
-                    obscureText: !showPassword,
+                    obscureText: !_showPassword,
                     suffix: GestureDetector(
-                      onTap: () {
-                        handleShowPassword();
-                      },
+                      onTap: () => _onShowPassword(),
                       child: Icon(
-                        showPassword
+                        _showPassword
                             ? CupertinoIcons.eye
                             : CupertinoIcons.eye_slash,
                       ),
@@ -176,9 +197,8 @@ class _SignupPageState extends State<SignupPage> {
                   delay: const Duration(milliseconds: 800),
                   child: Button(
                     text: "Sign Up",
-                    onPressed: () {
-                      handleSignUp();
-                    },
+                    isLoading: _isLoading,
+                    onPressed: () => _signUp(),
                   ),
                 ),
                 FadeInUp(
@@ -197,12 +217,11 @@ class _SignupPageState extends State<SignupPage> {
                         SizedBox(width: 8),
                         Button(
                           text: "Sign In",
+                          isEnabled: !_isLoading,
                           size: ButtonSize.small,
                           variant: ButtonVariant.link,
-                          onPressed: () {
-                            Get.to(() => SigninPage());
-                          },
-                        )
+                          onPressed: () => Get.to(() => SigninPage()),
+                        ),
                       ],
                     ),
                   ),
