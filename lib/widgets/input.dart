@@ -10,6 +10,7 @@ class Input extends StatefulWidget {
   final Widget? suffix;
   final TextInputType type;
   final bool obscureText;
+  final int? maxLines;
   final VoidCallback? onChange;
   final TextEditingController controller;
 
@@ -22,6 +23,7 @@ class Input extends StatefulWidget {
     this.prefix,
     this.suffix,
     this.onChange,
+    this.maxLines = 1,
     this.type = TextInputType.text,
     this.obscureText = false,
     required this.controller,
@@ -36,7 +38,7 @@ class _InputState extends State<Input> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (widget.label != null)
+        if (widget.label != null && widget.label != "")
           Padding(
             padding: EdgeInsets.only(left: 4),
             child: Align(
@@ -50,7 +52,7 @@ class _InputState extends State<Input> {
           decoration: BoxDecoration(
             border: Border.all(
               width: 2.0,
-              color: widget.error != ""
+              color: widget.error != "" && widget.error != null
                   ? CupertinoColors.systemRed
                   : CupertinoColors.lightBackgroundGray,
             ),
@@ -66,6 +68,7 @@ class _InputState extends State<Input> {
               Expanded(
                 child: CupertinoTextField(
                   decoration: null,
+                  maxLines: widget.maxLines,
                   obscureText: widget.obscureText,
                   keyboardType: widget.type,
                   placeholder: widget.placeholder,
@@ -82,7 +85,7 @@ class _InputState extends State<Input> {
           ),
         ),
         SizedBox(height: 6),
-        if (widget.error != "")
+        if (widget.error != null && widget.error != "")
           Padding(
             padding: EdgeInsets.only(left: 4),
             child: Align(
@@ -96,7 +99,7 @@ class _InputState extends State<Input> {
             ),
           ),
         SizedBox(height: 6),
-        if (widget.hint != null)
+        if (widget.hint != null && widget.hint != "")
           Padding(
             padding: EdgeInsets.only(left: 4),
             child: Align(

@@ -1,8 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:architecto/config/config.dart';
 import 'package:architecto/extensions/theme.dart';
-import 'package:architecto/pages/signin.dart';
-import 'package:architecto/pages/signup.dart';
+import 'package:architecto/pages/auth/signin.dart';
+import 'package:architecto/pages/auth/signup.dart';
 import 'package:architecto/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';

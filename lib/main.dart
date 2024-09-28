@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:architecto/config/theme.dart';
 import 'package:architecto/providers/auth/provider.dart';
 import 'package:architecto/providers/auth/wrapper.dart';
+import 'package:architecto/store/store.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Store.init();
   Get.put(AuthProvider());
 
   runApp(Architecto(

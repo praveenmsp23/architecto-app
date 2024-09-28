@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:architecto/extensions/theme.dart';
 import 'package:architecto/models/common.dart';
-import 'package:architecto/pages/signup.dart';
+import 'package:architecto/pages/auth/signin.dart';
 import 'package:architecto/providers/auth/provider.dart';
 import 'package:architecto/utils/common.dart';
 import 'package:architecto/widgets/button.dart';
@@ -10,33 +10,38 @@ import 'package:architecto/widgets/snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-class SigninPage extends StatefulWidget {
-  const SigninPage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<SigninPage> createState() => _SigninPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _SigninPageState extends State<SigninPage> {
+class _SignupPageState extends State<SignupPage> {
   AuthProvider _auth = Get.find();
   bool _isLoading = false;
   bool _showPassword = false;
 
+  String _nameError = "";
   String _emailError = "";
   String _passwordError = "";
 
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _signIn() async {
-    if (_emailError.isNotEmpty || _passwordError.isNotEmpty) return;
+  Future<void> _signUp() async {
+    if (_nameError.isNotEmpty ||
+        _emailError.isNotEmpty ||
+        _passwordError.isNotEmpty) return;
+    String name = _nameController.text;
     String email = _emailController.text;
     String password = _passwordController.text;
 
     setState(() {
       _isLoading = true;
     });
-    Result result = await _auth.signIn(email, password);
+    Result result = await _auth.signUp(name, email, password);
     if (!result.success) {
       SnackBar().errorMessage(result.message);
     }
@@ -48,6 +53,19 @@ class _SigninPageState extends State<SigninPage> {
   void _onShowPassword() {
     setState(() {
       _showPassword = !_showPassword;
+    });
+  }
+
+  void _onNameChange() {
+    String name = _nameController.text;
+    setState(() {
+      if (name.isEmpty) {
+        _nameError = 'Please enter your name';
+      } else if (name.length < 3) {
+        _nameError = "Name must contain at least 3 characters";
+      } else {
+        _nameError = "";
+      }
     });
   }
 
@@ -75,14 +93,17 @@ class _SigninPageState extends State<SigninPage> {
   @override
   void initState() {
     super.initState();
+    _nameController.addListener(_onNameChange);
     _emailController.addListener(_onEmailChange);
     _passwordController.addListener(_onPasswordChange);
   }
 
   @override
   void dispose() {
+    _nameController.removeListener(_onNameChange);
     _emailController.removeListener(_onEmailChange);
     _passwordController.removeListener(_onPasswordChange);
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -108,7 +129,7 @@ class _SigninPageState extends State<SigninPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: Text(
-                        "Let's sign you in.",
+                        "Let's sign you up.",
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.w800,
@@ -119,7 +140,7 @@ class _SigninPageState extends State<SigninPage> {
                   FadeInRight(
                     delay: const Duration(microseconds: 200),
                     child: Text(
-                      "Welcome back! \nYou've been missed",
+                      "Welcome! It's a pleasure to have you onboard",
                       style: TextStyle(
                         fontSize: 36,
                         height: 1.25,
@@ -133,6 +154,16 @@ class _SigninPageState extends State<SigninPage> {
             ),
             Column(
               children: [
+                FadeInUp(
+                  delay: const Duration(milliseconds: 600),
+                  child: Input(
+                    controller: _nameController,
+                    error: _nameError,
+                    label: "Name",
+                    type: TextInputType.name,
+                    placeholder: "John Snow",
+                  ),
+                ),
                 FadeInUp(
                   delay: const Duration(milliseconds: 600),
                   child: Input(
@@ -165,9 +196,9 @@ class _SigninPageState extends State<SigninPage> {
                 FadeInUp(
                   delay: const Duration(milliseconds: 800),
                   child: Button(
-                    text: "Sign In",
+                    text: "Sign Up",
                     isLoading: _isLoading,
-                    onPressed: () => _signIn(),
+                    onPressed: () => _signUp(),
                   ),
                 ),
                 FadeInUp(
@@ -178,18 +209,18 @@ class _SigninPageState extends State<SigninPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don't have an account?",
+                          "Already have an account?",
                           style: TextStyle(
                             color: context.secondaryTextColor,
                           ),
                         ),
                         SizedBox(width: 8),
                         Button(
-                          text: "Sign Up",
+                          text: "Sign In",
+                          isEnabled: !_isLoading,
                           size: ButtonSize.small,
                           variant: ButtonVariant.link,
-                          isEnabled: !_isLoading,
-                          onPressed: () => Get.to(() => SignupPage()),
+                          onPressed: () => Get.to(() => SigninPage()),
                         ),
                       ],
                     ),

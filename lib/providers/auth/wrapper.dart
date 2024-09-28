@@ -1,8 +1,9 @@
-import 'package:architecto/pages/organization.dart';
+import 'package:architecto/pages/auth/organization.dart';
 import 'package:architecto/pages/home.dart';
-import 'package:architecto/pages/verify_email.dart';
+import 'package:architecto/pages/auth/verify_email.dart';
 import 'package:architecto/pages/welcome.dart';
-import 'package:flutter/material.dart';
+import 'package:architecto/widgets/loader.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -31,11 +32,12 @@ class _AuthWrapperState extends State<AuthWrapper> {
   }
 
   void _onAuthChange() {
+    if (auth.loading) return;
     if (auth.user == null) {
       Get.to(() => WelcomePage());
-    } else if (auth.user!.emailVerified) {
+    } else if (!auth.user!.emailVerified) {
       Get.to(() => VerifyEmailPage(email: auth.user!.email!));
-    } else if (auth.user!.tenantId!.isEmpty) {
+    } else if (auth.organization == null) {
       Get.to(() => CreateOrganizationPage());
     } else {
       Get.to(() => HomePage());
@@ -46,13 +48,13 @@ class _AuthWrapperState extends State<AuthWrapper> {
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
-        debugPrint("User: ${authProvider.user}");
-        if (authProvider.user == null) {
+        if (authProvider.loading) {
+          return PageLoader();
+        } else if (authProvider.user == null) {
           return WelcomePage();
-        } else if (authProvider.user!.emailVerified) {
+        } else if (!authProvider.user!.emailVerified) {
           return VerifyEmailPage(email: authProvider.user!.email!);
-        } else if (authProvider.user!.tenantId == null ||
-            authProvider.user!.tenantId!.isEmpty) {
+        } else if (auth.organization == null) {
           return CreateOrganizationPage();
         } else {
           return HomePage();

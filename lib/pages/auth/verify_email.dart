@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:architecto/extensions/theme.dart';
 import 'package:architecto/models/common.dart';
@@ -16,10 +18,18 @@ class VerifyEmailPage extends StatefulWidget {
 }
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
+  Timer? timer;
   AuthProvider _auth = Get.find();
+
+  Future<void> _checkVerification() async {
+    await _auth.isEmailVerified();
+  }
 
   Future<void> _sendMail() async {
     Result result = await _auth.sendVerificationEmail();
+    if (result.success) {
+      SnackBar().successMessage(result.message);
+    }
     if (!result.success) {
       SnackBar().errorMessage(result.message);
     }
@@ -27,8 +37,15 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   @override
   void initState() {
-    _sendMail();
     super.initState();
+    timer =
+        Timer.periodic(Duration(seconds: 5), (Timer t) => _checkVerification());
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -101,7 +118,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     FadeInUp(
                       delay: const Duration(milliseconds: 1000),
                       child: Button(
-                        text: "Refresh",
+                        text: "Resend",
                         onPressed: () => _sendMail(),
                       ),
                     ),

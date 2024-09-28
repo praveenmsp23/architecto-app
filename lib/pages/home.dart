@@ -9,9 +9,12 @@ class HomePage extends StatelessWidget {
     AuthProvider _auth = Get.find();
     return CupertinoPageScaffold(
       child: Center(
-        child: Button(
-          text: "Logout",
-          onPressed: () => _auth.signOut(),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: Button(
+            text: "Logout",
+            onPressed: () => _auth.signOut(),
+          ),
         ),
       ),
     );
