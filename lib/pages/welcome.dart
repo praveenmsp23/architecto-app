@@ -40,7 +40,7 @@ class WelcomePage extends StatelessWidget {
                         child: Text(
                           Config.appName,
                           style: TextStyle(
-                            fontSize: 40,
+                            fontSize: 36,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
@@ -54,7 +54,7 @@ class WelcomePage extends StatelessWidget {
                         style: TextStyle(
                           color: context.secondaryTextColor,
                           height: 1.25,
-                          fontSize: 18,
+                          fontSize: 14,
                         ),
                       ),
                     ),

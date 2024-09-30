@@ -112,124 +112,127 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: true,
       child: Container(
-        margin: EdgeInsets.only(top: 60),
+        alignment: Alignment.center,
         padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SizedBox(),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FadeInRight(
-                    delay: const Duration(microseconds: 200),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        "Let's sign you up.",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w800,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(),
+              Padding(
+                padding: EdgeInsets.only(bottom: 40),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FadeInRight(
+                        delay: const Duration(microseconds: 200),
+                        child: Text(
+                          "Let's sign you up.",
+                          style: TextStyle(
+                            fontSize: 36,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
                       ),
+                      FadeInRight(
+                        delay: const Duration(microseconds: 200),
+                        child: Text(
+                          "Welcome! It's a pleasure to have you onboard",
+                          style: TextStyle(
+                            fontSize: 36,
+                            height: 1.25,
+                            color: context.secondaryTextColor,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Column(
+                children: [
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 600),
+                    child: Input(
+                      controller: _nameController,
+                      error: _nameError,
+                      label: "Name",
+                      type: TextInputType.name,
+                      placeholder: "John Snow",
                     ),
                   ),
-                  FadeInRight(
-                    delay: const Duration(microseconds: 200),
-                    child: Text(
-                      "Welcome! It's a pleasure to have you onboard",
-                      style: TextStyle(
-                        fontSize: 36,
-                        height: 1.25,
-                        color: context.secondaryTextColor,
-                        fontWeight: FontWeight.w300,
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 600),
+                    child: Input(
+                      controller: _emailController,
+                      error: _emailError,
+                      label: "Email",
+                      type: TextInputType.emailAddress,
+                      placeholder: "name@example.com",
+                    ),
+                  ),
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 600),
+                    child: Input(
+                      controller: _passwordController,
+                      error: _passwordError,
+                      label: "Password",
+                      type: TextInputType.text,
+                      obscureText: !_showPassword,
+                      suffix: GestureDetector(
+                        onTap: () => _onShowPassword(),
+                        child: Icon(
+                          _showPassword
+                              ? CupertinoIcons.eye
+                              : CupertinoIcons.eye_slash,
+                        ),
+                      ),
+                      placeholder: "Password",
+                    ),
+                  ),
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 800),
+                    child: Button(
+                      text: "Sign Up",
+                      isLoading: _isLoading,
+                      onPressed: () => _signUp(),
+                    ),
+                  ),
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 800),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Already have an account?",
+                            style: TextStyle(
+                              color: context.secondaryTextColor,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Button(
+                            text: "Sign In",
+                            isEnabled: !_isLoading,
+                            size: ButtonSize.small,
+                            variant: ButtonVariant.link,
+                            onPressed: () => Get.to(() => SigninPage()),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-            Column(
-              children: [
-                FadeInUp(
-                  delay: const Duration(milliseconds: 600),
-                  child: Input(
-                    controller: _nameController,
-                    error: _nameError,
-                    label: "Name",
-                    type: TextInputType.name,
-                    placeholder: "John Snow",
-                  ),
-                ),
-                FadeInUp(
-                  delay: const Duration(milliseconds: 600),
-                  child: Input(
-                    controller: _emailController,
-                    error: _emailError,
-                    label: "Email",
-                    type: TextInputType.emailAddress,
-                    placeholder: "name@example.com",
-                  ),
-                ),
-                FadeInUp(
-                  delay: const Duration(milliseconds: 600),
-                  child: Input(
-                    controller: _passwordController,
-                    error: _passwordError,
-                    label: "Password",
-                    type: TextInputType.text,
-                    obscureText: !_showPassword,
-                    suffix: GestureDetector(
-                      onTap: () => _onShowPassword(),
-                      child: Icon(
-                        _showPassword
-                            ? CupertinoIcons.eye
-                            : CupertinoIcons.eye_slash,
-                      ),
-                    ),
-                    placeholder: "Password",
-                  ),
-                ),
-                FadeInUp(
-                  delay: const Duration(milliseconds: 800),
-                  child: Button(
-                    text: "Sign Up",
-                    isLoading: _isLoading,
-                    onPressed: () => _signUp(),
-                  ),
-                ),
-                FadeInUp(
-                  delay: const Duration(milliseconds: 800),
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Already have an account?",
-                          style: TextStyle(
-                            color: context.secondaryTextColor,
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Button(
-                          text: "Sign In",
-                          isEnabled: !_isLoading,
-                          size: ButtonSize.small,
-                          variant: ButtonVariant.link,
-                          onPressed: () => Get.to(() => SigninPage()),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(),
-          ],
+              SizedBox(),
+            ],
+          ),
         ),
       ),
     );

@@ -23,7 +23,6 @@ class AuthProvider extends ChangeNotifier {
     });
     _firebaseAuth.userChanges().listen((u) async {
       this._user = u;
-      notifyListeners();
     });
     validate();
   }

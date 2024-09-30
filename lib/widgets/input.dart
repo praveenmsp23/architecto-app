@@ -46,9 +46,8 @@ class _InputState extends State<Input> {
               child: Text(widget.label!),
             ),
           ),
-        SizedBox(height: 6),
+        SizedBox(height: 3),
         Container(
-          padding: EdgeInsets.symmetric(vertical: 1.0),
           decoration: BoxDecoration(
             border: Border.all(
               width: 2.0,
@@ -56,7 +55,7 @@ class _InputState extends State<Input> {
                   ? CupertinoColors.systemRed
                   : CupertinoColors.lightBackgroundGray,
             ),
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
             children: [
@@ -72,7 +71,7 @@ class _InputState extends State<Input> {
                   obscureText: widget.obscureText,
                   keyboardType: widget.type,
                   placeholder: widget.placeholder,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 16),
                   controller: widget.controller,
                 ),
               ),
@@ -84,7 +83,7 @@ class _InputState extends State<Input> {
             ],
           ),
         ),
-        SizedBox(height: 6),
+        SizedBox(height: 3),
         if (widget.error != null && widget.error != "")
           Padding(
             padding: EdgeInsets.only(left: 4),

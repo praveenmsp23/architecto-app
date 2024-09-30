@@ -61,11 +61,11 @@ class Button extends StatelessWidget {
   double _getFontSize() {
     switch (size) {
       case ButtonSize.small:
-        return 16;
+        return 14;
       case ButtonSize.medium:
-        return 18;
+        return 16;
       case ButtonSize.large:
-        return 20;
+        return 18;
     }
   }
 
@@ -73,11 +73,11 @@ class Button extends StatelessWidget {
     if (variant == ButtonVariant.link) return EdgeInsets.all(0);
     switch (size) {
       case ButtonSize.small:
-        return EdgeInsets.all(8);
+        return EdgeInsets.all(4);
       case ButtonSize.medium:
-        return EdgeInsets.all(10);
+        return EdgeInsets.all(6);
       case ButtonSize.large:
-        return EdgeInsets.all(12);
+        return EdgeInsets.all(8);
     }
   }
 
@@ -88,7 +88,7 @@ class Button extends StatelessWidget {
       child: Container(
         padding: _getPadding(),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(8),
           color: _getBackgroundColor(context),
           border: Border.all(
             width: 2,
@@ -117,7 +117,7 @@ class Button extends StatelessWidget {
                 fontSize: _getFontSize(),
                 color: _getTextColor(context)
                     .withOpacity(!isEnabled || isLoading ? 0.75 : 1),
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],

@@ -80,100 +80,103 @@ class _CreateOrganizationPageState extends State<CreateOrganizationPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: true,
       child: Container(
-        margin: EdgeInsets.only(top: 60),
+        alignment: Alignment.center,
         padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SizedBox(),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FadeInRight(
-                    delay: const Duration(microseconds: 200),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        "Set up your business.",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w800,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(),
+              Padding(
+                padding: EdgeInsets.only(bottom: 40),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FadeInRight(
+                        delay: const Duration(microseconds: 200),
+                        child: Text(
+                          "Set up your business.",
+                          style: TextStyle(
+                            fontSize: 36,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
                       ),
+                      FadeInRight(
+                        delay: const Duration(microseconds: 200),
+                        child: Text(
+                          "We're thrilled to help you build the future.",
+                          style: TextStyle(
+                            fontSize: 36,
+                            height: 1.25,
+                            color: context.secondaryTextColor,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Column(
+                children: [
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 600),
+                    child: Input(
+                      controller: _nameController,
+                      error: _nameError,
+                      label: "Name",
+                      type: TextInputType.name,
+                      placeholder: "Company name",
                     ),
                   ),
-                  FadeInRight(
-                    delay: const Duration(microseconds: 200),
-                    child: Text(
-                      "We're thrilled to help you build the future.",
-                      style: TextStyle(
-                        fontSize: 36,
-                        height: 1.25,
-                        color: context.secondaryTextColor,
-                        fontWeight: FontWeight.w300,
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 600),
+                    child: Input(
+                      controller: _aboutController,
+                      label: "About",
+                      type: TextInputType.text,
+                      placeholder: "Something about your company.",
+                    ),
+                  ),
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 600),
+                    child: Input(
+                      controller: _addressController,
+                      label: "Address",
+                      type: TextInputType.streetAddress,
+                      maxLines: 2,
+                    ),
+                  ),
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 800),
+                    child: Button(
+                      text: "Register",
+                      isLoading: _isLoading,
+                      onPressed: () => _signUp(),
+                    ),
+                  ),
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 800),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Button(
+                        text: "Sign Out",
+                        isEnabled: !_isLoading,
+                        variant: ButtonVariant.outline,
+                        onPressed: () => _auth.signOut(),
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-            Column(
-              children: [
-                FadeInUp(
-                  delay: const Duration(milliseconds: 600),
-                  child: Input(
-                    controller: _nameController,
-                    error: _nameError,
-                    label: "Name",
-                    type: TextInputType.name,
-                    placeholder: "Company name",
-                  ),
-                ),
-                FadeInUp(
-                  delay: const Duration(milliseconds: 600),
-                  child: Input(
-                    controller: _aboutController,
-                    label: "About",
-                    type: TextInputType.text,
-                    placeholder: "Something about your company.",
-                  ),
-                ),
-                FadeInUp(
-                  delay: const Duration(milliseconds: 600),
-                  child: Input(
-                    controller: _addressController,
-                    label: "Address",
-                    type: TextInputType.streetAddress,
-                    maxLines: 2,
-                  ),
-                ),
-                FadeInUp(
-                  delay: const Duration(milliseconds: 800),
-                  child: Button(
-                    text: "Register",
-                    isLoading: _isLoading,
-                    onPressed: () => _signUp(),
-                  ),
-                ),
-                FadeInUp(
-                  delay: const Duration(milliseconds: 800),
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Button(
-                      text: "Sign Out",
-                      isEnabled: !_isLoading,
-                      variant: ButtonVariant.outline,
-                      onPressed: () => _auth.signOut(),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(),
-          ],
+              SizedBox(),
+            ],
+          ),
         ),
       ),
     );

@@ -69,7 +69,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         child: Text(
                           "Verify your email",
                           style: TextStyle(
-                            fontSize: 40,
+                            fontSize: 36,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
@@ -85,7 +85,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                               style: TextStyle(
                                 color: context.secondaryTextColor,
                                 height: 1.25,
-                                fontSize: 18,
+                                fontSize: 14,
                               ),
                             ),
                             TextSpan(
@@ -93,7 +93,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 height: 1.25,
-                                fontSize: 18,
+                                fontSize: 14,
                               ),
                             ),
                             TextSpan(
@@ -102,7 +102,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                               style: TextStyle(
                                 color: context.secondaryTextColor,
                                 height: 1.25,
-                                fontSize: 18,
+                                fontSize: 14,
                               ),
                             ),
                           ],
