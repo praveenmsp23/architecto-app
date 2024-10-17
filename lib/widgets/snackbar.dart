@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SnackBar {
@@ -8,7 +7,7 @@ class SnackBar {
       message,
       details ?? "Something went wrong. Please try again later.",
       icon: Icon(CupertinoIcons.info_circle),
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: CupertinoColors.activeBlue,
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       borderRadius: 10,
       barBlur: 40,
@@ -22,7 +21,7 @@ class SnackBar {
       message,
       details ?? "Something went wrong. Please try again later.",
       icon: Icon(CupertinoIcons.checkmark_circle),
-      backgroundColor: Colors.lightGreen,
+      backgroundColor: CupertinoColors.activeGreen,
       margin: EdgeInsets.only(top: 10, left: 20, right: 20),
       borderRadius: 10,
       barBlur: 40,
@@ -36,7 +35,7 @@ class SnackBar {
       message,
       details ?? "Something went wrong. Please try again later.",
       icon: Icon(CupertinoIcons.exclamationmark_circle),
-      backgroundColor: Colors.red,
+      backgroundColor: CupertinoColors.systemRed,
       margin: EdgeInsets.only(top: 10, left: 20, right: 20),
       borderRadius: 10,
       barBlur: 40,
@@ -50,7 +49,7 @@ class SnackBar {
       message,
       details ?? "Something went wrong. Please try again later.",
       icon: Icon(CupertinoIcons.exclamationmark_triangle),
-      backgroundColor: Colors.orange,
+      backgroundColor: CupertinoColors.activeOrange,
       margin: EdgeInsets.only(top: 10, left: 20, right: 20),
       borderRadius: 10,
       barBlur: 40,
